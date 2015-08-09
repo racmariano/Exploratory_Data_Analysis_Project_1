@@ -1,0 +1,14 @@
+data <- read.table("household_power_consumption.txt", header=TRUE, sep=";")
+data$Date <-as.Date(data$Date, "%d/%m/%Y")
+data <- subset(data, Date == as.Date("01/02/2007", "%d/%m/%Y") | Date == as.Date("02/02/2007", "%d/%m/%Y"))
+data$Global_active_power <- as.numeric(as.character(data$Global_active_power))
+trueTime = paste(data$Date, data$Time)
+
+png('plot3.png', width=480, height = 480)
+
+plot(as.POSIXct(trueTime),as.numeric(as.character(data$Sub_metering_1)), type="l", ylab="Energy sub metering", xlab="")
+lines(as.POSIXct(trueTime),as.numeric(as.character(data$Sub_metering_2)),col="red")
+lines(as.POSIXct(trueTime),data$Sub_metering_3,col="blue")
+legend("topright", pch="-", col=c("black", "red", "blue"), legend = c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+
+dev.off()
